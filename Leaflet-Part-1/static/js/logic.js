@@ -10,9 +10,9 @@ d3.json(queryUrl).then(function (data) {
   // The below defines the steps which will be taken whenever the createFeatures function is called (with the current code, these will be the steps executed with data.features from our JSON). 
   function createFeatures(earthquakeData) {
 
-    // Nested function which will be called later in L.geoJSON; it defines what is ran once for each feature in the features array:
+    // Below are [2] nested functions which will be called later in L.geoJSON; they define what is ran once for each feature in the features array:
     
-    // Gives each feature a popup that describes the magnitude, the location, and depth of the earthquake.
+    // 1. Gives each feature a popup that describes the magnitude, the location, and depth of the earthquake.
     function onEachFeature(feature, layer) {
       layer.bindPopup(`
       Magnitude: <h3>${feature.properties.mag}</h3><hr>
@@ -20,13 +20,28 @@ d3.json(queryUrl).then(function (data) {
       </h3><p>Depth: <h3>${feature.geometry.coordinates[2]}</h3></p>`);
     }
   
-    
-    // Creates a GeoJSON layer with the popups.
+    // 2. Gives each feature a circle marker using its' coordinates.
+    function createCircleMarker(feature, coordinates) {
+        // Define the properties of each circle marker based on earthquake's magnitude.
+        let magnitude = feature.properties.mag;
+
+        return L.circleMarker(coordinates, {
+            radius: magnitude * 5,
+            fillColor: "green",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.9,
+        });
+    }
+
+    // Create a GeoJSON layer with the popups and circle markers.
     let earthquakes = L.geoJSON(earthquakeData, {
-        onEachFeature: onEachFeature
+        onEachFeature: onEachFeature,
+        pointToLayer: createCircleMarker
     });
   
-    // Send our earthquakes layer to the createMap function.
+    // Send our earthquakes layer to the createMap function/
     createMap(earthquakes);
   }
   
@@ -69,5 +84,6 @@ d3.json(queryUrl).then(function (data) {
     }).addTo(myMap);
   
   }
+  
   
   
