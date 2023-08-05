@@ -8,9 +8,11 @@ The USGS is interested in building a new set of tools that will allow them to vi
 ![image](https://github.com/lishanisrikaran/leaflet-challenge/assets/126973634/73a97f1f-319c-45a2-8e1d-f1a4034457cf)
 
 <b>File content:</b>
-<li>Logic.js - Creates the map visualisation of all earthquakes from the last 7 days.</li>
+<li>apiKeys - Holds the token which will enable access to the satellite tile layer.</li>
+<li>Link.txt - Holds link to GeoJSON file worked with for reference outside of the code.</li>
 <li>Index.html - All the necessary libaries and website structure is defined.</li>
-<li>Style.css - The stylings related to the website's body, map, and it's legend are outlined.</li>
+<li>Logic.js - Creates the map visualisation of all earthquakes from the last 7 days.</li>
+<li>Style.css - The stylings related to the website's body, map, and it's legend are outlined </li>
 <li>How to Access a Maptiler API Token.docx - Summarises how to obtain an API Key to view the satallite tile layer.</li>
 <br>
 Data source: https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
