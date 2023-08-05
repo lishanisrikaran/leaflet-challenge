@@ -12,5 +12,5 @@ The USGS is interested in building a new set of tools that will allow them to vi
 <li>Index.html - All the necessary libaries and website structure is defined.</li>
 <li>Style.css - The stylings related to the website's body, map, and it's legend are outlined.</li>
 <li>How to Access a Maptiler API Token.docx - Summarises how to obtain an API Key to view the satallite tile layer.</li>
-
+<br>
 Data source: https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php
