@@ -1,12 +1,12 @@
 /*
 This code has been broken down into four digestable sections: 
-1) Retreieves the earthquake geojson data and calls a function on it's features object which will create it's circle markers and their popups. 
+1) Retreieves the earthquake geojson data and calls a function on it's features array of objects, this function will create circle markers and their popups for each earthquake. 
 2) The function called in section 1 is defined.
 3) Sets up a function which contains the steps to create a legend that displays the various depth magnitudes and what colors they are depicted by.
 4) Creation of the map object. 
 */
 
-// _______________________________________________________________________________________________________________________________________________________________________
+// 1)_______________________________________________________________________________________________________________________________________________________________________
 
 
 // Stores an API endpoint as queryUrl.
@@ -19,10 +19,10 @@ d3.json(queryUrl).then(function (data) {
 });
 
 
-// _______________________________________________________________________________________________________________________________________________________________________
+// 2)_______________________________________________________________________________________________________________________________________________________________________
 
 
-// The below defines the steps will be taken whenever the createFeatures function is called (with the current code, these will be the steps executed with data.features 
+// The below defines the steps which will be taken whenever the createFeatures function is called (with the current code, these will be the steps executed with data.features 
 // from the geoJSON). 
 function createFeatures(earthquakeData) {
 
@@ -68,14 +68,14 @@ function createFeatures(earthquakeData) {
             return color;
         }
 
-        // Creates the circle marker for each feature. 
+        // Returns a circle marker where the radius and fill color are variable due to their values being populated based off the magnitude and depth in the observed feature. 
         return L.circleMarker(coordinates, {
             radius: magnitude * 5,              // Size of the circle will be dependant on the feature's magnitude.
             fillColor: getColor(feature),       // Color of the circle will be dependant on the feature's depth.
             color: "#000",                      // Circumference color.
             weight: 1,                          // Edge weight.
             opacity: 1,                         // Edge opacity. 
-            fillOpacity: 0.9,                   // Circle fill opacity. 
+            fillOpacity: 0.9,                   // Circle marker's fill opacity. 
         });
     }
 
@@ -90,7 +90,7 @@ function createFeatures(earthquakeData) {
 }
 
 
-// _______________________________________________________________________________________________________________________________________________________________________
+// 3)_______________________________________________________________________________________________________________________________________________________________________
 
 
 // Function to create the legend which will explain the color system adopted to visualise depth's magnitude.
@@ -111,7 +111,7 @@ function createLegend(map, title) {
             "90+": "#FF0000"
         };
 
-        labels.push(`<strong>${title}</strong>`);          // Adds the title to the legend.
+        labels.push(`<b>${title}</b>`);                     // Adds the title to the legend.
 
         // Loops through the depthColors object and for each key (depth range), and value (color hex), their content and style are appended to the labels array.
         Object.entries(depthColors).forEach(([range, color]) => {
@@ -119,15 +119,15 @@ function createLegend(map, title) {
         });
 
 
-        div.innerHTML = labels.join("<br>");              // Enter the labels array within the div and separates each line with a line break.
-            return div;
-        };
+        div.innerHTML = labels.join("<br>");                // Enters the labels array within the div and separates each line with a line break.
+        return div;
+    };
 
-        legend.addTo(map);                                // Adds the legend to the map id. 
-    }
+    legend.addTo(map);                                  // Adds the legend to the map specified. 
+}
 
 
-// _______________________________________________________________________________________________________________________________________________________________________
+// 4)_______________________________________________________________________________________________________________________________________________________________________
   
 
 function createMap(earthquakes) {
@@ -147,7 +147,7 @@ function createMap(earthquakes) {
     	
     // Creates a baseMaps object.
     let baseMaps = {
-        "Topographic Map": topo, 
+        "Topographic": topo, 
         "Street": street,
         "Satellite": satellite
     };
@@ -164,13 +164,12 @@ function createMap(earthquakes) {
     // Creates a layer control for the end user.
     // Passes in the baseMaps and overlayMaps.
     // Adds the layer control to the map.
-    L.control.layers(baseMaps, {
-        Earthquakes: earthquakes
-    }, {
-        collapsed: false
-    }).addTo(myMap);
+    L.control.layers(baseMaps, 
+        {Earthquakes: earthquakes},
+        {collapsed: false}
+    ).addTo(myMap);
 
-    // Calls the function to create the legend with the title "Depth".
+    // Calls the function to create the legend with the map just created and gives it the title "Depth".
     createLegend(myMap, "Depth:");
 
     
